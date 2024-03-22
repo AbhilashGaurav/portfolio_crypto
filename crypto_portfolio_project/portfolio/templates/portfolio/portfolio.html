@@ -1,0 +1,124 @@
+<!-- portfolio\templates\portfolio\portfolio.html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Portfolio</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'portfolio/css/styles.css' %}">
+    <style>
+        /* CSS styles to set the width and height of the image */
+        .crypto-image {
+            width: 50px; /* Set the desired width */
+            height: auto; /* Automatically adjust height to maintain aspect ratio */
+        }
+
+        /* Dark theme styles */
+        body {
+            background-color: #222; /* Dark background color for the body */
+            color: #fff; /* Light text color */
+            font-family: Arial, sans-serif; /* Specify a font for better readability */
+        }
+        
+        h1 {
+            text-align: center; /* Center align the heading */
+            margin-top: 30px; /* Add some top margin for spacing */
+        }
+        
+        .container {
+            background-color: #222; /* Dark background color for the body */
+            max-width: 800px; /* Limit the width of the container */
+            margin: 0 auto; /* Center the container horizontally */
+            padding: 20px; /* Add padding for content spacing */
+            border-radius: 5px;
+            box-shadow: 0 0 20px rgba(20, 87, 233, 0.5); /* Blue light shadow */
+        }
+
+        .crypto-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            
+        }
+
+        .crypto-card {
+            width: calc(25% - 20px); /* Set the width of each card (25% of the container width with margins) */
+            border: 1px solid #444; /* Dark border color for the card */
+            border-radius: 5px;
+            padding: 10px;
+            margin: 10px;
+            cursor: pointer; /* Add cursor pointer for clickable effect */
+            position: relative;
+            z-index: 1;
+            transition: transform 0.3s ease-in-out;
+            border-radius: 5px;
+            box-shadow: 0 0 20px rgba(20, 87, 233, 0.5); 
+            text-align: center; /* Align content to the center */
+            background-color: #333; /* Dark background color for the card */
+        }
+
+        .crypto-card:hover {
+            transform: translateY(-5px); /* Add a slight hover effect */
+        }
+
+        p {
+            margin: 5px 0; /* Adjust paragraph margin for better spacing */
+        }
+        /* Style for the navbar */
+nav {
+    background-color: #333; /* Dark background color for navbar */
+    padding: 10px 20px;
+    text-align: center;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin-right: 20px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #fff; /* Light text color for navbar links */
+    transition: color 0.3s;
+}
+
+nav ul li a:hover {
+    color: #ddd; /* Lighter text color on hover */
+}
+    </style>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="/portfolio/">My Portfolio</a></li>
+            <li><a href="{% url 'holdings_list' %}">Holdings</a></li>
+        </ul>
+    </nav>
+    <h1>My Portfolio</h1>
+    {% if portfolio %}
+        <div class="container">
+            <div class="crypto-container">
+                {% for item in portfolio %}
+                    <div class="crypto-card">
+                        <img src="{{item.image}}" alt="{{ item.cryptocurrency }} Image" class="crypto-image"> <!-- Cryptocurrency Image -->
+                        <h2>{{ item.cryptocurrency }}</h2> <!-- Cryptocurrency Name -->
+                        <p><strong>Symbol:</strong> {{ item.symbol }}</p>
+                        <p><strong>Quantity:</strong> {{ item.quantity }}</p>
+                        <p><strong>Purchase Price:</strong> ${{ item.purchase_price }}</p>
+                        <p><strong>Purchase Date:</strong> {{ item.purchase_date }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% else %}
+        <p>No holdings found.</p>
+    {% endif %}
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!-- portfolio\templates\base.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}My Site{% endblock %}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1e1e1e; /* Dark background color */
+            color: #fff; /* Light text color */
+            margin: 0;
+            padding: 0;
+            text-align: center; /* Center align everything */
+        }
+        header, main, footer {
+            display: inline-block; /* Display as inline-block for centering */
+            text-align: left; /* Reset text-align for child elements */
+        }
+        header {
+            background-color: #333; /* Darker background color for header */
+            padding: 20px;
+            width: 100%;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 32px;
+            color: #fff; /* Light text color for header */
+        }
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        nav ul li {
+            display: inline;
+            margin-right: 20px;
+        }
+        nav ul li a {
+            text-decoration: none;
+            color: #fff; /* Light text color for links */
+            transition: color 0.3s;
+        }
+        nav ul li a:hover {
+            color: #ddd; /* Lighter text color on hover */
+        }
+        main {
+            padding: 20px;
+            width: 100%;
+        }
+        footer {
+            background-color: #333; /* Darker background color for footer */
+            padding: 20px;
+            width: 100%;
+        }
+        footer p {
+            margin: 0;
+            color: #fff; /* Light text color for footer */
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>My TRADING Portfolio</h1>
+        <nav>
+            <ul>
+                <li><a href="{% url 'holdings_list' %}">Home</a></li>
+                <li><a href="/portfolio/">My portfolio</a></li>
+                <!-- Add more navigation links as needed -->
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer>
+        <p>&copy; 2024 MySite. All rights reserved.</p>
+    </footer>
+</body>
+</html>
