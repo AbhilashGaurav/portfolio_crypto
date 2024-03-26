@@ -1,15 +1,47 @@
 # portfolio/views.py
-from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from .models import Holding
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import login, logout
+from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect
+from django.urls import reverse_lazy, reverse
 
-# @login_required
-# def holdings_list1(request):
-#     holdings = Holding.objects.filter(user=request.user)
-#     return render(request, 'portfolio/holdings_list.html', {'holdings': holdings})
-from django.shortcuts import render
 from .utils import fetch_crypto_data
 
+from .forms import RegistrationForm, AddCryptoForm
+
+from .models import Portfolio
+
+# register
+def register(request):
+    if request.method == 'POST':
+        form = RegistrationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('holdings_list')  # Redirect to home page after successful registration
+    else:
+        form = RegistrationForm()
+    return render(request, 'registration/register.html', {'form': form})
+
+# login
+def user_login(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            return redirect(reverse_lazy('holdings_list'))  # Redirect to holdings list after successful login
+    else:
+        form = AuthenticationForm()
+    return render(request, 'registration/login.html', {'form': form})
+
+# logout
+def user_logout(request):
+    logout(request)
+    return redirect(reverse('holdings_list'))  # Redirect to the home page after logout
+
+# homepage data
 def holdings_list(request):
     crypto_data = fetch_crypto_data()
     holdings = [
@@ -47,11 +79,7 @@ def holdings_list(request):
     return render(request, 'portfolio/holdings_list.html', {'holdings': holdings})
 
 
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
-from .forms import AddCryptoForm
-from .models import Portfolio
-
+# add new crypto in their portfolio
 @login_required
 def add_to_portfolio(request):
     if request.method == 'POST':
@@ -74,11 +102,10 @@ def add_to_portfolio(request):
         form = AddCryptoForm()
     return render(request, 'portfolio/portfolio.html', {'form': form})
 
-# views.py
-from django.shortcuts import render
-from .models import Portfolio
-
+# own portfolio
+@login_required
 def portfolio(request):
     # Retrieve the user's portfolio data
     user_portfolio = Portfolio.objects.filter(user=request.user)
     return render(request, 'portfolio/portfolio.html', {'portfolio': user_portfolio})
+

@@ -97,9 +97,16 @@ nav ul li a:hover {
 <body>
     <nav>
         <ul>
-            <li><a href="/portfolio/">My Portfolio</a></li>
+            {% if user.is_authenticated %}
+            <li><a href="{% url 'portfolio' %}">My Portfolio</a></li>
             <li><a href="{% url 'holdings_list' %}">Holdings</a></li>
+            <li><a href="{% url 'logout' %}">Logout</a></li>
+        {% else %}
+            <li><a href="{% url 'login' %}">Login</a></li>
+            <li><a href="{% url 'register' %}">Register</a></li>
+        {% endif %}
         </ul>
+        
     </nav>
     <h1>My Portfolio</h1>
     {% if portfolio %}
